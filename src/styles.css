@@ -9,6 +9,17 @@
     color: #b61fa7;
 }
 
+.footer-link {
+    padding: 15px;
+    display: block;
+    font-size: 19px;
+    color: #e2ebf0;
+}
+
+.footer-link1 {
+    color: #acd9f1;
+}
+
 .citycard {
     max-width: 390px;
     margin: 0 auto;
@@ -121,7 +132,7 @@ hr {
 ul {
     list-style-type: none;
     margin: 0px auto;
-    padding-top: 27px;
+    padding: 20px;
     font-size: 21px;
 }
 
@@ -140,7 +151,13 @@ ul {
 
 .maxmin {
     display: inline;
-    margin: 0 15px;
+    margin: 0 5px;
     text-align: -webkit-match-parent;
-    text-decoration-line: none;
+}
+
+#maxtemp {
+    color: #7e0371;
+}
+#mintemp {
+    color: #d459c8;
 }

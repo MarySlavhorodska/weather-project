@@ -29,16 +29,12 @@ function formatDate(date) {
   dateAndTime.innerHTML = `<small>${currentDay}, ${currentMonth} ${currentDate}, ${currentHour}:${currentMinutes}</small>`;
 }
 
-let now = new Date();
-formatDate(now);
-
-///
-///
 function searchCity(city) {
   let apiKey = "a643c3246f179fe06b62d492d58cf730";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
   axios.get(`${apiUrl}&appid=${apiKey}`).then(showTemperature);
 }
+
 function handleSubmit(event) {
   event.preventDefault();
   let searchInput = document.querySelector("#enter-city");
@@ -52,18 +48,16 @@ function handleSubmit(event) {
   searchCity(city);
 }
 
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", handleSubmit);
-
-///
 function showTemperature(response) {
   console.log(response);
   let h1 = document.querySelector("h1");
   h1.innerHTML = response.data.name;
   //let count = document.querySelector("#country");
   //count.innerHTML = response.data.sys.country;
+  celsiusTemperature = response.data.main.temp;
+
   let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(response.data.main.temp);
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
   let humidity = document.querySelector("#humidity");
   humidity.innerHTML = response.data.main.humidity;
   let wind = document.querySelector("#wind");
@@ -74,15 +68,9 @@ function showTemperature(response) {
   tempMax.innerHTML = Math.round(response.data.main.temp_max);
   let tempMin = document.querySelector("#mintemp");
   tempMin.innerHTML = Math.round(response.data.main.temp_min);
+
 }
 
-let apiKey = "a643c3246f179fe06b62d492d58cf730";
-let city = "lisbon";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-axios.get(apiUrl).then(showTemperature);
-
-////
 function relativePosition(position) {
   let apiKey = "a643c3246f179fe06b62d492d58cf730";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
@@ -94,5 +82,43 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(relativePosition);
 }
 
+function convertToFahrenheit(event) {
+  event.preventDefault();
+  celsiusLink.classList.remove("active");
+  fahrenheitLink.classList.add("active");
+  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
+}
+
+function convertToCelsius(event) {
+  event.preventDefault();
+  celsiusLink.classList.add("active");
+  fahrenheitLink.classList.remove("active");
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+}
+
+
+
+let now = new Date();
+formatDate(now);
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+let apiKey = "a643c3246f179fe06b62d492d58cf730";
+let city = "lisbon";
+let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+axios.get(apiUrl).then(showTemperature);
+
 let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
+
+let celsiusTemperature = null;
+
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", convertToFahrenheit);
+
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", convertToCelsius);

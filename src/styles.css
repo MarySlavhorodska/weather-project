@@ -161,3 +161,12 @@ ul {
 #mintemp {
     color: #d459c8;
 }
+
+.units {
+    font-size: 20px;
+    position: relative;
+    top: -13px;
+    color: #0d3b74;
+    margin-left: 0px;
+}
+

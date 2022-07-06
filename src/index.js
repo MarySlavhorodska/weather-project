@@ -52,34 +52,25 @@ function showTemperature(response) {
   console.log(response);
   let h1 = document.querySelector("h1");
   h1.innerHTML = response.data.name;
-  //let count = document.querySelector("#country");
-  //count.innerHTML = response.data.sys.country;
-  celsiusTemperature = response.data.main.temp;
 
+  celsiusTemperature = response.data.main.temp;
   let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+  temperatureElement.innerHTML = response.data.main.temp;
+
   let humidity = document.querySelector("#humidity");
   humidity.innerHTML = response.data.main.humidity;
+
   let wind = document.querySelector("#wind");
   wind.innerHTML = Math.round(response.data.wind.speed);
+
   let description = document.querySelector("#description");
   description.innerHTML = response.data.weather[0].description;
+
   let tempMax = document.querySelector("#maxtemp");
   tempMax.innerHTML = Math.round(response.data.main.temp_max);
   let tempMin = document.querySelector("#mintemp");
   tempMin.innerHTML = Math.round(response.data.main.temp_min);
 
-}
-
-function relativePosition(position) {
-  let apiKey = "a643c3246f179fe06b62d492d58cf730";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
-  axios.get(`${apiUrl}&appid=${apiKey}`).then(showTemperature);
-}
-
-function getCurrentLocation(event) {
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(relativePosition);
 }
 
 function convertToFahrenheit(event) {
@@ -100,6 +91,18 @@ function convertToCelsius(event) {
 }
 
 
+function relativePosition(position) {
+  let apiKey = "a643c3246f179fe06b62d492d58cf730";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+  
+  axios.get(`${apiUrl}&appid=${apiKey}`).then(showTemperature);
+}  
+
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(relativePosition);
+}  
+
 
 let now = new Date();
 formatDate(now);
@@ -110,6 +113,7 @@ form.addEventListener("submit", handleSubmit);
 let apiKey = "a643c3246f179fe06b62d492d58cf730";
 let city = "lisbon";
 let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
 axios.get(apiUrl).then(showTemperature);
 
 let currentLocationButton = document.querySelector("#current-location-button");
@@ -122,3 +126,5 @@ fahrenheitLink.addEventListener("click", convertToFahrenheit);
 
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", convertToCelsius);
+
+searchCity("Tokyo");
